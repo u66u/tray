@@ -1,6 +1,6 @@
 import System.Random
 import Control.Monad
-import Data.Bits 
+import Data.Bits
 
 randbits :: IO [Bool]
 randbits = do
@@ -10,9 +10,12 @@ randbits = do
 
 divide_message :: Int -> [Bool] -> [[Bool]]
 divide_message _ [] = []
-divide_message blockSize bits = take blockSize bits : divideIntoBlocks blockSize (drop blockSize bits)
+divide_message blockSize bits = take blockSize bits : divide_message blockSize (drop blockSize bits)
 
 paritybits :: [[Bool]] -> [[Bool]]
 paritybits = map (\block -> block ++ [oddParity block])
   where
-    oddParity block = odd . popCount . foldr (\b acc -> if b then acc `xor` 1 else acc) 0 $ block 
+    oddParity block = odd . popCount $ foldr (\b acc -> if b then acc `xor` (1 :: Int) else acc) (0 :: Int) block
+
+main :: IO() = do
+  print("hi")
